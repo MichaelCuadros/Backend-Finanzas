@@ -37,7 +37,8 @@ exports.getVentasPorCliente = async (req, res) => {
     const ventas = await Venta.aggregate([
       { $group: { _id: "$Cliente_id", totalVentas: { $sum: "$montoTotal" } } },
       { $lookup: { from: "clientes", localField: "_id", foreignField: "_id", as: "cliente" } },
-      { $unwind: "$cliente" }
+      { $unwind: "$cliente" },
+      { $limit: 8 }
     ]);
 
     const ventasPorCliente = ventas.map(venta => ({
@@ -57,7 +58,8 @@ exports.getCreditosPorCliente = async (req, res) => {
     const creditos = await Credito.aggregate([
       { $group: { _id: "$Cliente_id", totalCreditos: { $sum: "$monto" } } },
       { $lookup: { from: "clientes", localField: "_id", foreignField: "_id", as: "cliente" } },
-      { $unwind: "$cliente" }
+      { $unwind: "$cliente" },
+      { $limit: 5 }
     ]);
 
     const creditosPorCliente = creditos.map(credito => ({
