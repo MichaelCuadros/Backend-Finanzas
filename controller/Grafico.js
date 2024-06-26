@@ -40,7 +40,6 @@ exports.getVentasPorCliente = async (req, res) => {
       { $unwind: "$cliente" },
       { $limit: 8 }
     ]);
-
     const ventasPorCliente = ventas.map(venta => ({
       cliente: venta.cliente.nombres + ' ' + venta.cliente.apellidos,
       totalVentas: venta.totalVentas
